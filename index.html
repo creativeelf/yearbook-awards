@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Yearbook Awards — Hextech Edition</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:       '#010a13',
+            teal:       '#0ac8b9',
+            gold:       '#c89b3c',
+            'gold-lt':  '#f0d97a',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     JOIN SCREEN
+══════════════════════════════════════════════ -->
+<div id="screen-join" class="screen active items-center justify-center p-6 py-12">
+  <div class="w-full max-w-sm">
+
+    <!-- Crest / Title -->
+    <div class="text-center mb-10">
+      <div class="title-hextech text-5xl mb-1">Yearbook</div>
+      <div class="title-hextech text-5xl mb-3">Awards</div>
+      <div class="subtitle-hextech text-xs tracking-widest">HEXTECH EDITION</div>
+    </div>
+
+    <!-- Panel -->
+    <div class="hextech-panel p-7 relative">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <div class="subtitle-hextech text-xs text-center mb-6">— ENTER THE ARENA —</div>
+
+      <div class="mb-4">
+        <label class="block text-xs tracking-widest uppercase mb-1.5" style="color:#c89b3caa;">
+          Summoner Name
+        </label>
+        <input id="input-name"
+               class="hextech-input"
+               type="text"
+               placeholder="Your display name"
+               maxlength="20"
+               autocomplete="off">
+      </div>
+
+      <div class="mb-5">
+        <label class="block text-xs tracking-widest uppercase mb-1.5" style="color:#c89b3caa;">
+          Room Code <span style="color:#c89b3c55;">(blank = create new)</span>
+        </label>
+        <input id="input-room-code"
+               class="hextech-input tracking-widest text-center text-xl font-bold"
+               type="text"
+               placeholder="A B C 1 2 3"
+               maxlength="6"
+               autocomplete="off"
+               spellcheck="false">
+      </div>
+
+      <div id="join-error" class="hidden text-red-400 text-xs text-center mb-3"></div>
+
+      <button id="btn-join" class="btn-gold w-full">
+        Enter the Arena
+      </button>
+    </div>
+
+    <p class="text-center mt-4 text-xs" style="color:#c89b3c33;">
+      Leave room code blank to host a new game
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     LOBBY SCREEN
+══════════════════════════════════════════════ -->
+<div id="screen-lobby" class="screen items-center justify-center p-6 py-10">
+  <div class="w-full max-w-2xl">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="title-hextech text-3xl mb-1">Yearbook Awards</div>
+      <div class="subtitle-hextech text-xs tracking-widest">AWAITING SUMMONERS</div>
+    </div>
+
+    <!-- Room Code -->
+    <div class="hextech-panel p-6 text-center mb-5 relative">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <p class="text-xs tracking-widest uppercase mb-2" style="color:#c89b3caa;">Room Code — Share with friends</p>
+      <div id="lobby-room-code" class="room-code-display">——————</div>
+    </div>
+
+    <!-- Players -->
+    <div class="hextech-panel p-5 mb-6 relative">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="flex justify-between items-center mb-4">
+        <span class="subtitle-hextech text-xs">Summoners</span>
+        <span id="lobby-count" class="text-xs" style="color:#c89b3caa;">0 / 10</span>
+      </div>
+      <div id="lobby-players-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+      <p id="lobby-need-more" class="text-center text-xs mt-4 anim-pulse-gold" style="color:#c89b3c66;">
+        Need at least 4 summoners to begin…
+      </p>
+    </div>
+
+    <!-- Start controls -->
+    <div class="text-center space-y-2">
+      <button id="btn-start" class="btn-gold px-14" disabled>Begin the Ceremony</button>
+      <p id="lobby-host-label"  class="hidden text-xs" style="color:#c89b3c55;">You are the host</p>
+      <p id="lobby-guest-label" class="text-xs" style="color:#c89b3c44;">Waiting for the host to start…</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     VOTING SCREEN
+══════════════════════════════════════════════ -->
+<div id="screen-voting" class="screen flex-col p-4 pt-5">
+
+  <!-- Top bar -->
+  <div class="flex justify-between items-center mb-3 px-1">
+    <div class="subtitle-hextech text-xs">
+      ROUND <span id="v-round">1</span> / 10
+    </div>
+    <div id="v-my-name" class="text-xs" style="color:#c89b3c88;"></div>
+  </div>
+
+  <!-- Timer -->
+  <div class="timer-bar-track mb-2">
+    <div id="timer-bar" class="timer-bar-fill" style="width:100%;"></div>
+  </div>
+  <div class="text-center mb-4">
+    <span id="timer-num" class="text-2xl font-bold font-mono" style="color:#f0d97a;">30</span>
+    <span class="text-xs ml-1" style="color:#c89b3c55;">sec</span>
+  </div>
+
+  <!-- Question -->
+  <div class="hextech-panel p-5 mb-5 text-center relative mx-auto w-full max-w-3xl">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <p class="text-xs tracking-widest uppercase mb-2" style="color:#c89b3caa;">This Year's Award Goes To…</p>
+    <div id="v-question" class="title-hextech text-lg sm:text-xl md:text-2xl leading-snug"></div>
+  </div>
+
+  <!-- Vote status -->
+  <p id="v-status" class="text-center text-xs mb-4" style="color:#c89b3c66;"></p>
+
+  <!-- Nominee Cards -->
+  <div id="nominees-grid"
+       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto w-full">
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     REVEAL SCREEN
+══════════════════════════════════════════════ -->
+<div id="screen-reveal" class="screen items-center justify-center p-6 py-10">
+  <div class="w-full max-w-xl">
+
+    <div class="text-center mb-5">
+      <div class="subtitle-hextech text-xs tracking-widest">
+        ROUND <span id="r-round">1</span> RESULTS
+      </div>
+    </div>
+
+    <div class="text-center mb-5">
+      <div id="r-question" class="title-hextech text-base sm:text-lg md:text-xl opacity-75 leading-snug"></div>
+    </div>
+
+    <!-- Result card -->
+    <div id="r-card" class="hextech-panel p-8 text-center mb-7 relative anim-reveal">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <!-- Winner -->
+      <div id="r-winner-block">
+        <p class="text-xs tracking-widest uppercase mb-2" style="color:#c89b3caa;">This Year's Honoree</p>
+        <div id="r-winner-name" class="title-hextech text-4xl sm:text-5xl mb-3"></div>
+        <div class="gold-divider"></div>
+        <p class="text-xs mt-3 mb-1" style="color:#c89b3c66;">+100 Gold awarded to:</p>
+        <p id="r-earners" style="color:#0ac8b9; font-size:0.9rem;"></p>
+        <p id="r-breakdown" class="text-xs mt-3" style="color:#c89b3c44;"></p>
+      </div>
+
+      <!-- Stalemate -->
+      <div id="r-stalemate-block" class="hidden">
+        <div class="text-3xl font-black tracking-widest text-red-400 mb-2"
+             style="font-family:'Cinzel',serif;">STALEMATE</div>
+        <p class="text-sm mb-3" style="color:#c89b3c66;">The votes were split — no Gold awarded.</p>
+        <p id="r-stalemate-detail" class="text-xs" style="color:#c89b3c44;"></p>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="text-center">
+      <p class="text-xs mb-1" style="color:#c89b3c44;">Next round in</p>
+      <div id="r-countdown" class="text-4xl font-black anim-countdown" style="font-family:'Cinzel',serif;color:#c89b3c;">8</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     LEADERBOARD SCREEN
+══════════════════════════════════════════════ -->
+<div id="screen-leaderboard" class="screen flex-col items-center p-6 py-10">
+  <div class="w-full max-w-xl">
+
+    <div class="text-center mb-8">
+      <div class="title-hextech text-4xl mb-2">Final Rankings</div>
+      <div class="subtitle-hextech text-xs tracking-widest">THE CEREMONY IS COMPLETE</div>
+    </div>
+
+    <div id="leaderboard-list" class="space-y-3"></div>
+
+    <div class="text-center mt-10">
+      <button id="btn-play-again" class="btn-teal px-12">New Ceremony</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     MASTERY BURST OVERLAY (unanimous win)
+══════════════════════════════════════════════ -->
+<div id="mastery-overlay" class="hidden">
+  <div class="mastery-ring"></div>
+  <div class="mastery-ring"></div>
+  <div class="mastery-ring"></div>
+  <div class="mastery-core"></div>
+</div>
+
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

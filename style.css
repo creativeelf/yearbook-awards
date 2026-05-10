@@ -1,0 +1,399 @@
+/* =============================================
+   YEARBOOK AWARDS — HEXTECH THEME
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;400;600&display=swap');
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: #010a13;
+  background-image: radial-gradient(ellipse at 50% 40%, #0a1a30 0%, #010a13 65%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #e8d9b0;
+  overflow-x: hidden;
+}
+
+/* ---- Screens ---- */
+.screen { display: none; }
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---- Typography ---- */
+.title-hextech {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-weight: 900;
+  color: #c89b3c;
+  text-shadow: 0 0 24px #c89b3c55, 0 0 60px #c89b3c22;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.subtitle-hextech {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-weight: 700;
+  color: #0ac8b9;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---- Hextech Panel ---- */
+.hextech-panel {
+  background: rgba(1, 10, 19, 0.88);
+  border: 1px solid #c89b3c;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.hextech-panel::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200,155,60,0.07), transparent);
+  animation: goldGlint 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ---- Inputs ---- */
+.hextech-input {
+  background: rgba(5, 18, 35, 0.9);
+  border: 1px solid #c89b3c66;
+  color: #e8d9b0;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  outline: none;
+}
+
+.hextech-input:focus {
+  border-color: #c89b3c;
+  box-shadow: 0 0 14px #c89b3c33;
+}
+
+.hextech-input::placeholder { color: #c89b3c44; }
+
+/* ---- Buttons ---- */
+.btn-gold {
+  background: linear-gradient(135deg, #5e3f10 0%, #c89b3c 50%, #5e3f10 100%);
+  background-size: 200% 100%;
+  background-position: left center;
+  border: 1px solid #c89b3c;
+  color: #010a13;
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  transition: background-position 0.4s, box-shadow 0.3s, transform 0.1s, opacity 0.3s;
+  clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px), 0% 10px);
+  position: relative;
+}
+
+.btn-gold:hover:not(:disabled) {
+  background-position: right center;
+  box-shadow: 0 0 24px #c89b3c66;
+  transform: translateY(-2px);
+}
+
+.btn-gold:active:not(:disabled) { transform: translateY(0); }
+
+.btn-gold:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-teal {
+  background: transparent;
+  border: 1px solid #0ac8b9;
+  color: #0ac8b9;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.1s;
+  clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px), 0% 10px);
+}
+
+.btn-teal:hover {
+  background: rgba(10, 200, 185, 0.1);
+  box-shadow: 0 0 20px #0ac8b955;
+  transform: translateY(-2px);
+}
+
+/* ---- Nominee Cards ---- */
+.nominee-card {
+  background: rgba(1, 10, 19, 0.92);
+  border: 1px solid #c89b3c55;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem 1rem;
+  clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px), 0% 10px);
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nominee-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200,155,60,0.06), transparent);
+  animation: goldGlint 6s ease-in-out infinite;
+  pointer-events: none;
+  animation-delay: var(--glint-delay, 0s);
+}
+
+.nominee-card:hover:not(.card-voted):not(.card-disabled) {
+  border-color: #c89b3c;
+  box-shadow: 0 0 20px #c89b3c44, inset 0 0 20px #c89b3c0a;
+  transform: translateY(-4px) scale(1.02);
+}
+
+.nominee-card.card-selected {
+  border-color: #0ac8b9;
+  box-shadow: 0 0 24px #0ac8b955, inset 0 0 16px #0ac8b90a;
+}
+
+.nominee-card.card-disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.nominee-card.card-winner {
+  border-color: #c89b3c;
+  animation: levelUpFlash 1.5s ease forwards;
+}
+
+/* ---- Timer Bar ---- */
+.timer-bar-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(200,155,60,0.12);
+  border-top: 1px solid #c89b3c33;
+  border-bottom: 1px solid #c89b3c33;
+}
+
+.timer-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c89b3c, #f0d97a);
+  transition: width 0.9s linear;
+  box-shadow: 0 0 8px #c89b3c88;
+}
+
+.timer-bar-fill.urgent {
+  background: linear-gradient(90deg, #c83c3c, #ff7070);
+  box-shadow: 0 0 10px #ff000077;
+}
+
+/* ---- Award Stamp ---- */
+.stamp-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 10, 19, 0.6);
+  padding: 0.5rem;
+}
+
+.stamp-text {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 0.7rem;
+  color: #c89b3c;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid #c89b3c;
+  padding: 0.35rem 0.5rem;
+  transform: rotate(-15deg);
+  line-height: 1.3;
+  animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  max-width: 90%;
+}
+
+/* ---- Stalemate ---- */
+.stalemate-glow {
+  border-color: #ff4444 !important;
+  animation: stalemateGlow 1.5s ease-in-out infinite !important;
+}
+
+/* ---- Leaderboard Ranks ---- */
+.rank-row { transition: opacity 0.3s; }
+.rank-1 .hextech-panel { border-color: #c89b3c; }
+.rank-2 .hextech-panel { border-color: #a8a8b8; }
+.rank-3 .hextech-panel { border-color: #cd7f32; }
+
+.rank-badge {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  width: 2.5rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.rank-1 .rank-badge { color: #c89b3c; font-size: 1.4rem; }
+.rank-2 .rank-badge { color: #c0c0c0; font-size: 1.2rem; }
+.rank-3 .rank-badge { color: #cd7f32; font-size: 1.1rem; }
+.rank-other .rank-badge { color: #555d6b; font-size: 1rem; }
+
+/* ---- Corner Accents ---- */
+.corner { position: absolute; width: 10px; height: 10px; border-color: #c89b3c; }
+.corner-tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+.corner-tr { top: -1px; right: -1px; border-top: 2px solid; border-right: 2px solid; }
+.corner-bl { bottom: -1px; left: -1px; border-bottom: 2px solid; border-left: 2px solid; }
+.corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* ---- Divider ---- */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c89b3c77, #c89b3c, #c89b3c77, transparent);
+  margin: 0.75rem 0;
+}
+
+/* ---- Room Code ---- */
+.room-code-display {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 2.75rem;
+  color: #c89b3c;
+  letter-spacing: 0.35em;
+  text-shadow: 0 0 24px #c89b3c77;
+}
+
+/* ---- Mastery Burst (unanimous win) ---- */
+#mastery-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mastery-ring {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #f0d97a;
+  animation: masteryRing 1.5s ease-out forwards;
+}
+
+.mastery-ring:nth-child(2) { animation-delay: 0.2s; border-color: #c89b3c; }
+.mastery-ring:nth-child(3) { animation-delay: 0.4s; border-color: #e8d9b0; }
+
+.mastery-core {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f0d97a, #c89b3c, transparent 70%);
+  animation: masteryCore 1s ease-out forwards;
+}
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+
+@keyframes goldGlint {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes levelUpFlash {
+  0%   { box-shadow: 0 0 0 transparent; }
+  25%  { box-shadow: 0 0 50px #c89b3c, 0 0 100px #f0d97a55; }
+  60%  { box-shadow: 0 0 30px #c89b3c77; }
+  100% { box-shadow: 0 0 20px #c89b3c44; }
+}
+
+@keyframes stalemateGlow {
+  0%, 100% { box-shadow: 0 0 8px #ff000033; }
+  50%       { box-shadow: 0 0 28px #ff000099, inset 0 0 20px #ff00001a; }
+}
+
+@keyframes stampIn {
+  0%   { transform: rotate(-15deg) scale(4); opacity: 0; }
+  75%  { transform: rotate(-15deg) scale(0.92); opacity: 1; }
+  100% { transform: rotate(-15deg) scale(1); opacity: 1; }
+}
+
+@keyframes masteryRing {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(8); opacity: 0; }
+}
+
+@keyframes masteryCore {
+  0%   { transform: scale(0); opacity: 1; }
+  60%  { transform: scale(2.5); opacity: 0.9; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGold {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+@keyframes revealEntrance {
+  0%   { opacity: 0; transform: scale(0.85) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes countdownPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
+}
+
+@keyframes borderGlint {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ---- Utility ---- */
+.anim-fade-in-up  { animation: fadeInUp 0.5s ease forwards; opacity: 0; }
+.anim-level-up    { animation: levelUpFlash 1.5s ease forwards; }
+.anim-pulse-gold  { animation: pulseGold 2s ease-in-out infinite; }
+.anim-reveal      { animation: revealEntrance 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.anim-countdown   { animation: countdownPulse 1s ease-in-out infinite; }
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #010a13; }
+::-webkit-scrollbar-thumb { background: #c89b3c44; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #c89b3c99; }
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .room-code-display { font-size: 2rem; letter-spacing: 0.2em; }
+  .title-hextech { font-size: 1.75rem; }
+  .nominee-card { min-height: 72px; padding: 0.9rem 0.6rem; }
+}
