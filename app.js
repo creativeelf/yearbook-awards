@@ -23,6 +23,33 @@ const MAX_PLAYERS = 10;
 const ROUNDS      = 10;
 
 const ALL_QUESTIONS = [
+  // custom
+  "Most likely to lose their voice networking at GDC",
+  "Most likely to secure a job offer at a Game Dev Drink Up",
+  "Most likely to turn a major bug into an 'intended feature'",
+  "Most likely to submit a Game Jam build at the final second",
+  "Most likely to build a custom engine instead of finishing the game",
+  "Most likely to survive a 48-hour jam on nothing but boba and caffeine",
+  "Most likely to blame a loss on server tick rate",
+  "Most likely to accidentally leak an unannounced project during a screen share",
+  "Most likely to have a LinkedIn connection with every Perk-Up speaker",
+  "Most likely to be the 'carry' in every casual e-sports match",
+  "Most likely to spend more time on their RGB setup than their code",
+  "Most likely to own 50+ unplayed indie games on Steam",
+  "Most likely to find a game-breaking exploit in a professional tournament",
+  "Most likely to have a 'committing code at 4 AM' sleep schedule",
+  "Most likely to be the last one standing at the Drink Up",
+  "Most likely to be 'arriving in 5 mins' for three hours",
+  "Most likely to start an argument about which noodle soup place is best",
+  "Most likely to accidentally start a cult while trying to explain game lore",
+  "Most likely to spend their entire paycheck on 'The Edit' hotel upgrades",
+  "Most likely to forget they were screen sharing while looking at memes",
+  "Most likely to spend 20 minutes deciding what to order on Uber Eats",
+  "Most likely to have more empty boba cups than completed Jira tickets",
+  "Most likely to get a noise complaint for their mechanical keyboard",
+  "Most likely to be late to their own birthday party",
+  "Most likely to treat a casual board game night like a Grand Finals match",
+  // originals
   "Most likely to accidentally start a religion",
   "Most likely to sleep through their own wedding",
   "Most likely to befriend a wild bear and never tell anyone",
@@ -35,7 +62,6 @@ const ALL_QUESTIONS = [
   "Most likely to be a secret billionaire",
   "Most likely to invent something world-changing while procrastinating",
   "Most likely to have a Wikipedia page with three unsourced controversies",
-  "Most likely to start a cult with genuinely excellent merch",
   "Most likely to convince you of absolutely anything",
   "Most likely to show up 2 hours early and still somehow be late",
   "Most likely to own a secret island",
@@ -444,31 +470,23 @@ function renderLeaderboard(data) {
   clearTimers();
 
   const players = data.players || {};
+  const results = data.roundResults || [];
   const sorted  = Object.entries(players).sort(([, a], [, b]) => b.score - a.score);
 
-  const rankRoman  = ['I', 'II', 'III'];
-  const rankClass  = ['rank-1', 'rank-2', 'rank-3'];
+  const rankRoman = ['I', 'II', 'III'];
+  const rankClass = ['rank-1', 'rank-2', 'rank-3'];
 
+  // ── Left: points ranking ──────────────────────────────────────────────────
   $('leaderboard-list').innerHTML = sorted.map(([pid, p], idx) => {
-    const rank    = idx + 1;
-    const rClass  = rank <= 3 ? rankClass[idx] : 'rank-other';
-    const rLabel  = rank <= 3 ? rankRoman[idx] : rank;
-    const isMe    = pid === myId;
-    const delay   = idx * 0.08;
-
-    const awardsHtml = (p.awards ?? []).length
-      ? `<div class="flex flex-wrap gap-1 mt-2">
-           ${p.awards.map(a => `
-             <span class="px-2 py-0.5 text-xs"
-                   style="border:1px solid #c89b3c33;color:#c89b3c77;font-size:0.6rem;">
-               ${esc(a.length > 45 ? a.slice(0, 45) + '…' : a)}
-             </span>`).join('')}
-         </div>`
-      : '';
+    const rank   = idx + 1;
+    const rClass = rank <= 3 ? rankClass[idx] : 'rank-other';
+    const rLabel = rank <= 3 ? rankRoman[idx] : rank;
+    const isMe   = pid === myId;
+    const delay  = idx * 0.08;
 
     return `
       <div class="rank-row ${rClass} anim-fade-in-up" style="animation-delay:${delay}s;">
-        <div class="hextech-panel p-4 relative ${isMe ? '' : ''}">
+        <div class="hextech-panel p-3 relative">
           <div class="corner corner-tl"></div>
           <div class="corner corner-tr"></div>
           <div class="corner corner-bl"></div>
@@ -476,15 +494,32 @@ function renderLeaderboard(data) {
           ${isMe ? `<div style="position:absolute;inset:0;background:rgba(10,200,185,0.04);pointer-events:none;"></div>` : ''}
           <div class="flex items-center gap-3">
             <div class="rank-badge">${rLabel}</div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="font-semibold truncate">${esc(p.name)}${isMe ? ' <span style="color:#0ac8b9;font-size:0.7rem;">(you)</span>' : ''}</span>
-                <span class="ml-auto flex-shrink-0 font-bold text-sm" style="color:#c89b3c;">${p.score} Gold</span>
-              </div>
-              ${awardsHtml}
-            </div>
+            <span class="flex-1 font-semibold truncate">
+              ${esc(p.name)}${isMe ? ' <span style="color:#0ac8b9;font-size:0.7rem;">(you)</span>' : ''}
+            </span>
+            <span class="flex-shrink-0 font-bold text-sm" style="color:#c89b3c;">${p.score} pts</span>
           </div>
         </div>
+      </div>`;
+  }).join('');
+
+  // ── Right: awards table ───────────────────────────────────────────────────
+  $('awards-table').innerHTML = results.map((r, idx) => {
+    const delay      = idx * 0.06;
+    const winner     = r.isTie ? null : r.winnerName;
+    const shortQ     = r.question.replace(/^Most likely to /i, '');
+
+    return `
+      <div class="hextech-panel p-3 relative anim-fade-in-up" style="animation-delay:${delay}s;">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="text-xs mb-1 leading-snug" style="color:#c89b3c88;">${esc(shortQ)}</div>
+        ${winner
+          ? `<div class="font-semibold text-sm truncate" style="color:#e8d9b0;">${esc(winner)}</div>`
+          : `<div class="text-xs italic" style="color:#ff555566;">— Stalemate —</div>`
+        }
       </div>`;
   }).join('');
 }

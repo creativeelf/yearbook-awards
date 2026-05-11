@@ -235,14 +235,28 @@
      LEADERBOARD SCREEN
 ══════════════════════════════════════════════ -->
 <div id="screen-leaderboard" class="screen flex-col items-center p-6 py-10">
-  <div class="w-full max-w-xl">
+  <div class="w-full max-w-5xl">
 
     <div class="text-center mb-8">
       <div class="title-hextech text-4xl mb-2">Final Rankings</div>
       <div class="subtitle-hextech text-xs tracking-widest">THAT'S A WRAP</div>
     </div>
 
-    <div id="leaderboard-list" class="space-y-3"></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+      <!-- Left: Points leaderboard -->
+      <div>
+        <div class="subtitle-hextech text-xs mb-4">POINTS</div>
+        <div id="leaderboard-list" class="space-y-2"></div>
+      </div>
+
+      <!-- Right: Awards table -->
+      <div>
+        <div class="subtitle-hextech text-xs mb-4">AWARDS</div>
+        <div id="awards-table" class="space-y-2"></div>
+      </div>
+
+    </div>
 
     <div class="text-center mt-10">
       <button id="btn-play-again" class="btn-teal px-12">Play Again</button>
