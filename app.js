@@ -19,7 +19,7 @@ const db  = getFirestore(app);
 const VOTE_SECS   = 30;
 const REVEAL_SECS = 8;
 const MIN_PLAYERS = 4;
-const MAX_PLAYERS = 10;
+const MAX_PLAYERS = 20;
 const ROUNDS      = 10;
 
 const ALL_QUESTIONS = [
