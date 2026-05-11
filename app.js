@@ -49,6 +49,10 @@ const ALL_QUESTIONS = [
   "Most likely to get a noise complaint for their mechanical keyboard",
   "Most likely to be late to their own birthday party",
   "Most likely to treat a casual board game night like a Grand Finals match",
+  "Most likely to join the badminton Olympics team",
+  "Most likely to teach at a prestigious university",
+  "Most likely to travel around the world",
+  "Most likely to go viral making Fortnite maps",
   // originals
   "Most likely to accidentally start a religion",
   "Most likely to sleep through their own wedding",
