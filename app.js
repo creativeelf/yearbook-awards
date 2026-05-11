@@ -309,13 +309,17 @@ function renderLobby(data) {
     qrEl.dataset.code = roomCode;
     const joinUrl = `${location.origin}${location.pathname}?room=${roomCode}`;
     $('lobby-join-url').textContent = joinUrl;
-    new QRCode(qrEl, {
-      text:        joinUrl,
-      width:       148,
-      height:      148,
-      colorDark:   '#c89b3c',
-      colorLight:  '#010a13',
-      correctLevel: QRCode.CorrectLevel.M,
+    QRCode.toDataURL(joinUrl, {
+      width:  160,
+      margin: 2,
+      color:  { dark: '#1a0a00', light: '#f0d97a' },
+    }).then(dataUrl => {
+      const img = document.createElement('img');
+      img.src    = dataUrl;
+      img.width  = 160;
+      img.height = 160;
+      img.style.display = 'block';
+      qrEl.appendChild(img);
     });
   }
 
