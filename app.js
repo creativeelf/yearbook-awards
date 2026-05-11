@@ -302,6 +302,23 @@ function renderLobby(data) {
   $('lobby-room-code').textContent = roomCode;
   $('lobby-count').textContent     = `${pids.length} / ${MAX_PLAYERS}`;
 
+  // QR code — build once per room (skip if already rendered for this code)
+  const qrEl = $('lobby-qr');
+  if (qrEl.dataset.code !== roomCode) {
+    qrEl.innerHTML = '';
+    qrEl.dataset.code = roomCode;
+    const joinUrl = `${location.origin}${location.pathname}?room=${roomCode}`;
+    $('lobby-join-url').textContent = joinUrl;
+    new QRCode(qrEl, {
+      text:        joinUrl,
+      width:       148,
+      height:      148,
+      colorDark:   '#c89b3c',
+      colorLight:  '#010a13',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  }
+
   $('lobby-players-grid').innerHTML = pids.map(pid => `
     <div class="hextech-panel p-3 text-center relative"
          style="clip-path:polygon(8px 0%,calc(100% - 8px) 0%,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0% calc(100% - 8px),0% 8px);">
