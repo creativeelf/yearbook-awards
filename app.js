@@ -512,7 +512,7 @@ $('btn-join').addEventListener('click', async () => {
   const name = $('input-name').value.trim();
   const code = $('input-room-code').value.trim();
 
-  if (!name)              { showError('Please enter your summoner name.'); return; }
+  if (!name)              { showError('Please enter your name.'); return; }
   if (name.length > 20)   { showError('Name must be 20 characters or less.'); return; }
   if (code && code.length !== 6) { showError('Room code must be exactly 6 characters.'); return; }
 
@@ -535,7 +535,7 @@ $('btn-join').addEventListener('click', async () => {
     }
   } finally {
     $('btn-join').disabled    = false;
-    $('btn-join').textContent = 'Enter the Arena';
+    $('btn-join').textContent = 'Join Game';
   }
 });
 

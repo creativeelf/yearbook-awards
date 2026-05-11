@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Yearbook Awards — Hextech Edition</title>
+  <title>Yearbook Awards</title>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +36,7 @@
     <div class="text-center mb-10">
       <div class="title-hextech text-5xl mb-1">Yearbook</div>
       <div class="title-hextech text-5xl mb-3">Awards</div>
-      <div class="subtitle-hextech text-xs tracking-widest">HEXTECH EDITION</div>
+      <div class="subtitle-hextech text-xs tracking-widest">CLASS OF 2025</div>
     </div>
 
     <!-- Panel -->
@@ -46,11 +46,11 @@
       <div class="corner corner-bl"></div>
       <div class="corner corner-br"></div>
 
-      <div class="subtitle-hextech text-xs text-center mb-6">— ENTER THE ARENA —</div>
+      <div class="subtitle-hextech text-xs text-center mb-6">— WELCOME —</div>
 
       <div class="mb-4">
         <label class="block text-xs tracking-widest uppercase mb-1.5" style="color:#c89b3caa;">
-          Summoner Name
+          Your Name
         </label>
         <input id="input-name"
                class="hextech-input"
@@ -76,7 +76,7 @@
       <div id="join-error" class="hidden text-red-400 text-xs text-center mb-3"></div>
 
       <button id="btn-join" class="btn-gold w-full">
-        Enter the Arena
+        Join Game
       </button>
     </div>
 
@@ -96,7 +96,7 @@
     <!-- Header -->
     <div class="text-center mb-8">
       <div class="title-hextech text-3xl mb-1">Yearbook Awards</div>
-      <div class="subtitle-hextech text-xs tracking-widest">AWAITING SUMMONERS</div>
+      <div class="subtitle-hextech text-xs tracking-widest">WAITING FOR PLAYERS</div>
     </div>
 
     <!-- Room Code -->
@@ -116,18 +116,18 @@
       <div class="corner corner-bl"></div>
       <div class="corner corner-br"></div>
       <div class="flex justify-between items-center mb-4">
-        <span class="subtitle-hextech text-xs">Summoners</span>
+        <span class="subtitle-hextech text-xs">Players</span>
         <span id="lobby-count" class="text-xs" style="color:#c89b3caa;">0 / 10</span>
       </div>
       <div id="lobby-players-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
       <p id="lobby-need-more" class="text-center text-xs mt-4 anim-pulse-gold" style="color:#c89b3c66;">
-        Need at least 4 summoners to begin…
+        Need at least 4 players to begin…
       </p>
     </div>
 
     <!-- Start controls -->
     <div class="text-center space-y-2">
-      <button id="btn-start" class="btn-gold px-14" disabled>Begin the Ceremony</button>
+      <button id="btn-start" class="btn-gold px-14" disabled>Start the Game</button>
       <p id="lobby-host-label"  class="hidden text-xs" style="color:#c89b3c55;">You are the host</p>
       <p id="lobby-guest-label" class="text-xs" style="color:#c89b3c44;">Waiting for the host to start…</p>
     </div>
@@ -204,7 +204,7 @@
 
       <!-- Winner -->
       <div id="r-winner-block">
-        <p class="text-xs tracking-widest uppercase mb-2" style="color:#c89b3caa;">This Year's Honoree</p>
+        <p class="text-xs tracking-widest uppercase mb-2" style="color:#c89b3caa;">And the Award Goes To…</p>
         <div id="r-winner-name" class="title-hextech text-4xl sm:text-5xl mb-3"></div>
         <div class="gold-divider"></div>
         <p class="text-xs mt-3 mb-1" style="color:#c89b3c66;">+100 Gold awarded to:</p>
@@ -239,13 +239,13 @@
 
     <div class="text-center mb-8">
       <div class="title-hextech text-4xl mb-2">Final Rankings</div>
-      <div class="subtitle-hextech text-xs tracking-widest">THE CEREMONY IS COMPLETE</div>
+      <div class="subtitle-hextech text-xs tracking-widest">THAT'S A WRAP</div>
     </div>
 
     <div id="leaderboard-list" class="space-y-3"></div>
 
     <div class="text-center mt-10">
-      <button id="btn-play-again" class="btn-teal px-12">New Ceremony</button>
+      <button id="btn-play-again" class="btn-teal px-12">Play Again</button>
     </div>
 
   </div>
