@@ -385,6 +385,36 @@ body {
 .anim-reveal      { animation: revealEntrance 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 .anim-countdown   { animation: countdownPulse 1s ease-in-out infinite; }
 
+/* ---- Emoji Picker ---- */
+.emoji-btn {
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.4rem;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0% calc(100% - 6px), 0% 6px);
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emoji-btn:hover {
+  border-color: #c89b3c66;
+  background: rgba(200,155,60,0.08);
+  transform: scale(1.15);
+}
+
+.emoji-btn.selected {
+  border-color: #c89b3c;
+  background: rgba(200,155,60,0.18);
+  box-shadow: 0 0 10px #c89b3c44;
+  transform: scale(1.1);
+}
+
 /* ---- Scrollbar ---- */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #010a13; }

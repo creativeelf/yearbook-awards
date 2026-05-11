@@ -71,9 +71,19 @@ const ALL_QUESTIONS = [
   "Most likely to accidentally discover a new species",
 ];
 
+const EMOJIS = [
+  '🎮','🎯','🏆','🎲','🃏',
+  '🦊','🐉','🦁','🐺','🦝',
+  '👾','🤖','👻','💀','🎃',
+  '🧙','🦸','🧛','🤡','🎪',
+  '🔥','⚡','💥','🌙','⭐',
+  '💎','👑','🎩','🧋','🍕',
+];
+
 // ── Session state ─────────────────────────────────────────────────────────────
 let myId            = null;
 let myName          = '';
+let myEmoji         = EMOJIS[0];
 let roomCode        = '';
 let unsubscribeRoom = null;
 let votingTimer     = null;
@@ -138,7 +148,7 @@ async function joinOrCreate(name, code) {
       currentVotes: {},
       roundResults: [],
       players: {
-        [myId]: { name, score: 0, awards: [] },
+        [myId]: { name, emoji: myEmoji, score: 0, awards: [] },
       },
     });
   } else {
@@ -148,7 +158,7 @@ async function joinOrCreate(name, code) {
     if (Object.keys(snap.data().players).length >= MAX_PLAYERS) { showError('Room is full (10 players max).'); return; }
 
     await updateDoc(ref, {
-      [`players.${myId}`]: { name, score: 0, awards: [] },
+      [`players.${myId}`]: { name, emoji: myEmoji, score: 0, awards: [] },
     });
   }
 
@@ -314,9 +324,10 @@ function renderLobby(data) {
   $('lobby-players-grid').innerHTML = pids.map(pid => `
     <div class="hextech-panel p-3 text-center relative"
          style="clip-path:polygon(8px 0%,calc(100% - 8px) 0%,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0% calc(100% - 8px),0% 8px);">
-      <div class="text-sm font-semibold truncate">${esc(players[pid].name)}</div>
-      ${pid === data.host ? `<div class="text-xs mt-0.5" style="color:#c89b3c;font-size:0.6rem;letter-spacing:.1em;">HOST</div>` : ''}
-      ${pid === myId    ? `<div class="text-xs mt-0.5" style="color:#0ac8b9;font-size:0.6rem;">(you)</div>` : ''}
+      <div class="text-2xl mb-1">${players[pid].emoji || '🎮'}</div>
+      <div class="text-xs font-semibold truncate">${esc(players[pid].name)}</div>
+      ${pid === data.host ? `<div class="mt-0.5" style="color:#c89b3c;font-size:0.55rem;letter-spacing:.1em;">HOST</div>` : ''}
+      ${pid === myId    ? `<div class="mt-0.5" style="color:#0ac8b9;font-size:0.55rem;">(you)</div>` : ''}
     </div>
   `).join('');
 
@@ -374,7 +385,8 @@ function renderVoting(data) {
            style="--glint-delay:${i * 0.4}s"
            data-pid="${pid}">
         <div class="text-center w-full">
-          <div class="font-semibold text-sm sm:text-base truncate mb-1">${esc(players[pid].name)}</div>
+          <div class="text-3xl mb-1">${players[pid].emoji || '🎮'}</div>
+          <div class="font-semibold text-sm truncate">${esc(players[pid].name)}</div>
           ${myVote ? `<div class="text-xs mt-1" style="color:#c89b3c88;">${votesFor > 0 ? `${votesFor} vote${votesFor > 1 ? 's' : ''}` : '—'}</div>` : ''}
           ${isSelected ? `<div class="text-xs mt-1" style="color:#0ac8b9;font-size:0.65rem;letter-spacing:.08em;">✓ YOUR VOTE</div>` : ''}
         </div>
@@ -442,7 +454,8 @@ function renderReveal(data) {
     card.classList.remove('stalemate-glow');
     card.classList.add('anim-level-up');
 
-    $('r-winner-name').textContent = result.winnerName ?? '';
+    const winnerEmoji = result.winnerId ? (players[result.winnerId]?.emoji || '🎮') : '';
+    $('r-winner-name').innerHTML = `<div class="text-5xl mb-2">${winnerEmoji}</div>${esc(result.winnerName ?? '')}`;
 
     const earnerNames = (result.earners ?? [])
       .map(id => players[id]?.name ?? id)
@@ -504,6 +517,7 @@ function renderLeaderboard(data) {
           ${isMe ? `<div style="position:absolute;inset:0;background:rgba(10,200,185,0.04);pointer-events:none;"></div>` : ''}
           <div class="flex items-center gap-3">
             <div class="rank-badge">${rLabel}</div>
+            <div class="text-2xl flex-shrink-0">${p.emoji || '🎮'}</div>
             <span class="flex-1 font-semibold truncate">
               ${esc(p.name)}${isMe ? ' <span style="color:#0ac8b9;font-size:0.7rem;">(you)</span>' : ''}
             </span>
@@ -609,6 +623,21 @@ $('btn-join').addEventListener('click', async () => {
 // Auto-uppercase room code
 $('input-room-code').addEventListener('input', function () {
   this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+});
+
+// Build emoji grid
+(function buildEmojiGrid() {
+  $('emoji-grid').innerHTML = EMOJIS.map((e, i) =>
+    `<button class="emoji-btn${i === 0 ? ' selected' : ''}" data-emoji="${e}" type="button">${e}</button>`
+  ).join('');
+})();
+
+$('emoji-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.emoji-btn');
+  if (!btn) return;
+  myEmoji = btn.dataset.emoji;
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
 });
 
 // Pre-populate room code from URL on load (e.g. ?room=ABC123)
