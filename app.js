@@ -302,25 +302,13 @@ function renderLobby(data) {
   $('lobby-room-code').textContent = roomCode;
   $('lobby-count').textContent     = `${pids.length} / ${MAX_PLAYERS}`;
 
-  // QR code — build once per room (skip if already rendered for this code)
-  const qrEl = $('lobby-qr');
-  if (qrEl.dataset.code !== roomCode) {
-    qrEl.innerHTML = '';
-    qrEl.dataset.code = roomCode;
+  // QR code — set once per room
+  const qrImg = $('lobby-qr-img');
+  if (qrImg.dataset.code !== roomCode) {
+    qrImg.dataset.code = roomCode;
     const joinUrl = `${location.origin}${location.pathname}?room=${roomCode}`;
     $('lobby-join-url').textContent = joinUrl;
-    QRCode.toDataURL(joinUrl, {
-      width:  160,
-      margin: 2,
-      color:  { dark: '#1a0a00', light: '#f0d97a' },
-    }).then(dataUrl => {
-      const img = document.createElement('img');
-      img.src    = dataUrl;
-      img.width  = 160;
-      img.height = 160;
-      img.style.display = 'block';
-      qrEl.appendChild(img);
-    });
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(joinUrl)}&color=c89b3c&bgcolor=010a13&margin=6`;
   }
 
   $('lobby-players-grid').innerHTML = pids.map(pid => `
