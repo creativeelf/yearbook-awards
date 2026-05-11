@@ -152,6 +152,7 @@ async function joinOrCreate(name, code) {
     });
   }
 
+  setRoomCodeInUrl(roomCode);
   showScreen('screen-lobby');
   subscribe();
 }
@@ -531,6 +532,23 @@ function triggerMasteryBurst() {
   setTimeout(() => overlay.classList.add('hidden'), 2200);
 }
 
+// ── URL helpers ───────────────────────────────────────────────────────────────
+function getRoomCodeFromUrl() {
+  return new URLSearchParams(window.location.search).get('room')?.toUpperCase() || '';
+}
+
+function setRoomCodeInUrl(code) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('room', code);
+  history.pushState({}, '', url);
+}
+
+function clearRoomCodeFromUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('room');
+  history.replaceState({}, '', url);
+}
+
 // ══════════════════════════════════════════════════════════════════════════════
 //  EVENT LISTENERS
 // ══════════════════════════════════════════════════════════════════════════════
@@ -584,6 +602,10 @@ $('input-room-code').addEventListener('input', function () {
   this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 });
 
+// Pre-populate room code from URL on load (e.g. ?room=ABC123)
+const urlCode = getRoomCodeFromUrl();
+if (urlCode) $('input-room-code').value = urlCode;
+
 // Start game
 $('btn-start').addEventListener('click', startGame);
 
@@ -593,5 +615,6 @@ $('btn-play-again').addEventListener('click', () => {
   clearTimers();
   roomCode = ''; lastRound = -1; hasVoted = false; advanceLocked = false;
   $('input-room-code').value = '';
+  clearRoomCodeFromUrl();
   showScreen('screen-join');
 });
