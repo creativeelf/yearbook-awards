@@ -213,7 +213,7 @@ async function castVote(nomineeId) {
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
 function calcResults(votes, players) {
-  const pids   = Object.keys(players);
+  const pids   = Object.keys(players).sort();
   const counts = Object.fromEntries(pids.map(id => [id, 0]));
 
   for (const vid of Object.values(votes)) {
@@ -311,7 +311,7 @@ function renderLobby(data) {
   lastRound = -1;
 
   const players = data.players || {};
-  const pids    = Object.keys(players);
+  const pids    = Object.keys(players).sort();
 
   $('lobby-room-code').textContent = roomCode;
   $('lobby-count').textContent     = `${pids.length} / ${MAX_PLAYERS}`;
@@ -351,7 +351,7 @@ function renderVoting(data) {
   const round   = data.currentRound;
   const players = data.players || {};
   const votes   = data.currentVotes || {};
-  const pids    = Object.keys(players);
+  const pids    = Object.keys(players).sort();
 
   // Reset state on a new round
   if (round !== lastRound) {
